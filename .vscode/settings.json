@@ -1,0 +1,12 @@
+{
+    "cSpell.words": [
+        "changa",
+        "inlang",
+        "paraglide"
+    ],
+    "eslint.validate": [
+        "javascript",
+        "typescript",
+        "svelte"
+    ]
+}
