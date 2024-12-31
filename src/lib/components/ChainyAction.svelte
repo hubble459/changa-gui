@@ -1,28 +1,55 @@
+<script lang="ts" module>
+    export type Action = (Chainy['items'][number] | {type: Chainy['type'], items: Chainy['items']});
+</script>
+
 <script lang="ts">
     import { Chainy } from 'chainy';
+    import ChainyBuilder from './ChainyBuilder.svelte';
+
     interface Props {
-        action: Chainy['items'][number];
+        action: Action;
         remove: () => void;
     }
 
-    const props: Props = $props();
+    const {action = $bindable(), remove}: Props = $props();
+
+    function toggleGroup() {
+        if ('type' in action) {
+            // @ts-expect-error - type is in action (says it's not)
+            action.type = action.type === 'and' ? 'or' : 'and';
+        }
+    }
 </script>
 
-{#if props.action instanceof Chainy}
+{#if action instanceof Chainy}
     <p>meow</p>
+{:else if 'type' in action}
+    <div class="nested-builder">
+        <button onclick={() => toggleGroup()}>{action.type}</button>
+        <ChainyBuilder bind:items={action.items} />
+        <button class="remove" onclick={remove}>-</button>
+    </div>
 {:else}
     <div class="action">
-        {#if props.action.action === 'select'}
+        {#if action.action === 'select'}
             <p>select</p>
-            <input bind:value={props.action.options[0]} type="text" />
+            <input bind:value={action.options[0]} type="text" />
         {:else}
-            <p>{props.action.action}</p>
+            <p>{action.action}</p>
         {/if}
-        <button class="remove" onclick={props.remove}>-</button>
+        <button class="remove" onclick={remove}>-</button>
     </div>
 {/if}
 
 <style>
+    .nested-builder {
+        padding: 1.75em;
+        position: relative;
+        border: 1px solid #ccc;
+        border-radius: 0.5em;
+        margin-bottom: 1em;
+    }
+
     .action {
         z-index: 1;
         display: flex;
@@ -54,6 +81,6 @@
     }
 
     .remove:hover {
-        background-color: red;
+        background-color: #ff7a78;
     }
 </style>
