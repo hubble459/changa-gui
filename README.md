@@ -1,38 +1,34 @@
-# sv
+# Changa
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+An API and GUI interface for scraping manga. It uses the [chainy](https://github.com/hubble459/chainy) package to scrape based on simple actions. Changa includes a builder page where you can test your chains and debug them.
 
-## Creating a project
+Additionally changa also keeps track of which scrapers and websites are working (and which don't).
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Contributing Scrapers
 
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
+If you want to add support for some manga website, you can do so by going to the changa website and configuring a scraper. The configuration will have to be approved by the maintainer, because there's definitely a risk of XSS or misuse 😳
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Once you've cloned this repo and installed dependencies with `bun i`, start a development server:
 
 ```bash
-npm run dev
+bun run dev
 
 # or start the server and open the app in a new browser tab
-npm run dev -- --open
+bun run dev --open
 ```
 
 ## Building
 
-To create a production version of your app:
+To create a production version:
 
 ```bash
-npm run build
+bun run build
 ```
 
-You can preview the production build with `npm run preview`.
+You can preview the production build with `bun run preview`.
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Contributing
+
+Feel free to make a PR to add features or fix bugs.

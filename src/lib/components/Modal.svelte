@@ -1,10 +1,10 @@
 <script module lang="ts">
-    export type Modal = {
+    export type ModalType = {
         id: string;
         open: () => void;
         close: () => void;
     };
-    export const modals: Modal[] = [];
+    export const modals: ModalType[] = [];
 </script>
 
 <script lang="ts">

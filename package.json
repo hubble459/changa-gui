@@ -3,6 +3,7 @@
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
+	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -35,8 +36,8 @@
 		"@tailwindcss/container-queries": "^0.1.1",
 		"@tailwindcss/forms": "^0.5.9",
 		"@tailwindcss/typography": "^0.5.15",
-		"changa": "link:changa",
 		"chainy": "link:chainy",
-		"cheerio": "^1.0.0"
+		"cheerio": "^1.0.0",
+		"devalue": "^5.1.1"
 	}
 }

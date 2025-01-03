@@ -1,42 +1,41 @@
 <script lang="ts">
-    import ChainyBuilder from '$lib/components/ChainyBuilder.svelte';
-    import { Changa } from 'changa';
+    import { onMount } from 'svelte';
 
-    const changa = new Changa();
+    let scrapers = $state<Record<string, string>>({});
+
+    onMount(async () => {
+        scrapers = await fetch('/api/scraper').then(r => r.json());
+    });
 </script>
 
 <h1>changa</h1>
 
 <form method="GET" action="/manga">
     <input name="url" type="url" placeholder="url">
-    <button>go!</button>
+    <button>parse!</button>
 </form>
 
 <div>
     <table>
         <tbody>
             <tr>
-                <th>hostname</th>
-                <th>working</th>
+                <th>scraper</th>
             </tr>
-        {#each changa.hostnames as hostname}
+        {#each Object.entries(scrapers) as [scraper, url]}
             <tr>
-                <td>{hostname}</td>
-                <td>{changa.accepts() ? 'yes' : 'no'}</td>
+                <td><a aria-label="scraper-page" href="/scraper/{url.slice(8, -5)}">{scraper}</a></td>
             </tr>
+        {:else}
+            <tr><td>Loading...</td></tr>
         {/each}
         </tbody>
     </table>
 </div>
-
-<ChainyBuilder />
 
 <style>
     th, td {
         padding: 0em 1em;
     }
 
-    form {
-        margin: 1em 0;
-    }
+    
 </style>

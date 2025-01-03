@@ -1,5 +1,7 @@
 <script lang="ts" module>
-    export type Action = (Chainy['items'][number] | {type: Chainy['type'], items: Chainy['items']});
+    import type { Actions } from 'chainy';
+
+    export type Action = ({action: keyof Actions, options: unknown[]} | {type: Chainy['type'], items: Action[]});
 </script>
 
 <script lang="ts">
@@ -15,7 +17,6 @@
 
     function toggleGroup() {
         if ('type' in action) {
-            // @ts-expect-error - type is in action (says it's not)
             action.type = action.type === 'and' ? 'or' : 'and';
         }
     }
@@ -31,11 +32,12 @@
     </div>
 {:else}
     <div class="action">
-        {#if action.action === 'select'}
-            <p>select</p>
+        <p>{action.action}</p>
+        {#if ['select', 'attribute', 'matches', 'value', 'regex'].includes(action.action)}
             <input bind:value={action.options[0]} type="text" />
-        {:else}
-            <p>{action.action}</p>
+        {/if}
+        {#if ['regex'].includes(action.action)}
+            <input bind:value={action.options[0]} type="text" />
         {/if}
         <button class="remove" onclick={remove}>-</button>
     </div>
