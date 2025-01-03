@@ -1,11 +1,7 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
+	import type { PageData } from './$types';
 
-    let scrapers = $state<Record<string, string>>({});
-
-    onMount(async () => {
-        scrapers = await fetch('/api/scraper').then(r => r.json());
-    });
+    let { data: scrapers }: { data: PageData } = $props();
 </script>
 
 <h1>changa</h1>

@@ -1,61 +1,27 @@
 <script lang='ts'>
     import type { PageData } from './$types';
-    import { onMount } from 'svelte';
-    import { Changa } from 'changa';
     import { load } from 'cheerio';
-    import type { Manga } from 'changa/out/type';
+    import Tabs from '$lib/components/Tabs.svelte';
+    import Manga from '$lib/components/Manga.svelte';
+    import * as devalue from 'devalue';
+    import { ScraperParseDevalue, type Scraper } from '$lib/types/scraper';
 
     let { data }: { data: PageData } = $props();
 
-    let manga: Manga = $state({});
+    let doc = load(data.html, { baseURI: data.url });
 
-    onMount(async () => {
-        try {
-            const changa = new Changa();
-            manga = changa.manga(load(data.html, { baseURI: data.url }));
-            console.log(manga);
-            
-        } catch (error) {
-            console.error('Error fetching manga data:', error);
-        }
-    });
+    function parseScraper(scraper: string): Scraper {
+        return devalue.parse(scraper, ScraperParseDevalue);
+    }
 </script>
 
 <h1>Manga Details</h1>
+<small>{data.url}</small>
 
-{#if manga.title}
-    <div class="manga">
-        <img src="{manga.cover_url}" alt="">
-        <table>
-            <tbody>
-                {#each Object.entries(manga) as [key, value]}
-                <tr>
-                    <th>{key}:</th>
-                    <td>{Array.isArray(value) ? value.join(', ') : value}</td>
-                </tr>
-                {/each}
-            </tbody>
-        </table>
-    </div>
-{:else}
-    <p>Loading...</p>
-{/if}
+<hr>
 
-<style>
-    .manga {
-        display: flex;
-        gap: 1rem;
-    }
-
-    .manga img {
-        width: 200px;
-        height: 300px;
-        object-fit: cover;
-    }
-
-    .manga th {
-        text-align: right;
-        vertical-align: top;
-        padding-right: 1em;
-    }
-</style>
+<Tabs labels={Object.keys(data.scrapers)}>
+    {#snippet tab(scraper)}
+        <Manga url={data.url} {doc} scraper={parseScraper(data.scrapers[scraper])} />
+    {/snippet}
+</Tabs>

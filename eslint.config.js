@@ -26,7 +26,17 @@ export default ts.config(
             parserOptions: {
                 parser: ts.parser
             }
-        }
+        },
+
+        rules: {
+            'svelte/indent': ['error', {
+                indent: 4,
+            }],
+            'svelte/block-lang': ['error', {
+                enforceScriptPresent: true,
+                script: ['ts'],
+            }],
+        },
     },
     {
         files: ['**/*.svelte', '**/*.ts', '**/*.js'],

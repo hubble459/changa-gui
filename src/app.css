@@ -21,3 +21,11 @@ body {
 h1 {
     font-size: x-large;
 }
+
+hr {
+    border: 0;
+    height: 1px;
+    margin: 0.5em 0;
+    background: black;
+    width: 100%;
+}
