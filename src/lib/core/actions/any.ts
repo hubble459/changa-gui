@@ -1,18 +1,13 @@
-import { create_action, type ChainBuilder } from '../chain';
-import { actions, type Actions } from '.';
+import { run_action, type ChainBuilder } from '../chain';
 import type { CheerioAPI } from 'cheerio';
+import { create_action } from '../util';
 
 export const any = create_action({
     type: 'any',
     async run(doc: CheerioAPI, value: unknown, chains: ChainBuilder<any>[], fail: boolean = true): Promise<unknown> {
         for (const chain of chains) {
-            const action = actions[chain.type as keyof Actions];
-            if (!action) {
-                throw new Error(`Action with type '${chain.type}' not found`);
-            }
-
             try {
-                return await action.run(doc, value, ...chain.items as any);
+                return await run_action(chain as any, doc, value);
             } catch {
                 // ignored
             }

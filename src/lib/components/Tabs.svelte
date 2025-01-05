@@ -6,18 +6,19 @@
     import type { Snippet } from 'svelte';
 
     type Props = {
-        labels: Labels;
-        activeTab?: Labels[number];
-        tab: Snippet<[Labels[number]]>;
+        labels: Labels
+        activeTab?: Labels[number]
+        tab: Snippet<[Labels[number]]>
+        padding?: boolean
     };
 
-    let { labels, activeTab = $bindable(labels[0]), tab }: Props = $props();
-  
+    let { labels, activeTab = $bindable(labels[0]), tab, padding = true }: Props = $props();
+
     function handleClick(label: Labels[number]) {
         activeTab = label;
     }
 </script>
-  
+
 <div class="tabs">
     <ul>
         {#each labels as label}
@@ -26,10 +27,10 @@
             </li>
         {/each}
     </ul>
-    
+
     {#each labels as label}
         {#if activeTab === label}
-            <div class="box">
+            <div class="box" class:box-padding={padding}>
                 {@render tab(label)}
             </div>
         {/if}
@@ -43,10 +44,13 @@
 
     .box {
         margin-bottom: 0.5em;
-        padding: 2em;
         border: 1px solid #dee2e6;
         border-radius: 0 0 .5rem .5rem;
         border-top: 0;
+    }
+
+    .box-padding {
+        padding: 2em;
     }
 
     ul {
@@ -57,7 +61,7 @@
         list-style: none;
         border-bottom: 1px solid #dee2e6;
     }
-  
+
     button {
         border: 1px solid transparent;
         border-top-left-radius: 0.25rem;
@@ -66,11 +70,11 @@
         padding: 0.5rem 1rem;
         cursor: pointer;
     }
-  
+
     button:hover {
         border-color: #e9ecef #e9ecef #dee2e6;
     }
-  
+
     li.active > button {
         color: #495057;
         background-color: #fff;

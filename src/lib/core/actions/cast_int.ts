@@ -1,5 +1,5 @@
 import type { CheerioAPI } from 'cheerio';
-import { create_action } from '../chain';
+import { create_action } from '../util';
 
 export const cast_int = create_action({
     type: 'cast_int',

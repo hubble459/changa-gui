@@ -1,6 +1,6 @@
 # Changa
 
-An API and GUI interface for scraping manga. It uses the [chainy](https://github.com/hubble459/chainy) package to scrape based on simple actions. Changa includes a builder page where you can test your chains and debug them.
+An API and GUI interface for scraping manga. Changa includes a builder page where you can test your chains and debug them.
 
 Additionally changa also keeps track of which scrapers and websites are working (and which don't).
 

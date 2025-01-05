@@ -8,14 +8,10 @@ export type Action<Type extends string, Items extends readonly unknown[], Return
     run: (doc: CheerioAPI, value: unknown, ...items: Items) => MaybePromise<Return>
 };
 
-type ActionItems<A extends Action<string, any>> = A['run'] extends (doc: CheerioAPI, value: unknown, ...items: infer Items) => any ? Items : never;
+type ActionItems<A extends Action<keyof Actions, any>> = A['run'] extends (doc: CheerioAPI, value: unknown, ...items: infer Items) => any ? Items : never;
 
-export function create_action<Type extends string, Items extends readonly unknown[], Return = unknown>(action: Action<Type, Items, Return>) {
-    return action;
-}
-
-export type ChainBuilder<K extends keyof Actions> = {
-    type: Actions[K]['type']
+export type ChainBuilder<K extends keyof Actions = keyof Actions> = {
+    type: K
     items: ActionItems<Actions[K]>
 };
 

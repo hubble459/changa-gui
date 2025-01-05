@@ -1,6 +1,7 @@
 import type { CheerioAPI } from 'cheerio';
-import { create_action, type ChainBuilder } from '../chain';
+import { type ChainBuilder } from '../chain';
 import { actions, type Actions } from '.';
+import { create_action } from '../util';
 
 export const each = create_action({
     type: 'each',

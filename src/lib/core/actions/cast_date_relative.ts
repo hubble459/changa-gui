@@ -1,5 +1,5 @@
 import type { CheerioAPI } from 'cheerio';
-import { create_action } from '../chain';
+import { create_action } from '../util';
 import * as date_fns from 'date-fns';
 // @ts-expect-error bitch-ass package doesn't have types https://www.npmjs.com/package/parse-human-relative-time
 import parse_human from 'parse-human-relative-time/date-fns';

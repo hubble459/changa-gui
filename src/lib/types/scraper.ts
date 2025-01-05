@@ -1,56 +1,55 @@
-import { Chainy } from 'chainy';
-import type { Cheerio, CheerioAPI } from 'cheerio';
+import type { ChainBuilder } from '$lib/core/chain';
 
 export type Scraper = {
-    name: string,
-    hostnames: string[],
-    chains: Chains,
+    name: string
+    hostnames: string[]
+    chains: Chains
 };
 
 export interface Chains {
     manga: {
-        accepts: Chainy<CheerioAPI, unknown>;
+        accepts: ChainBuilder
 
-        url?: Chainy<CheerioAPI, string>;
-        title: Chainy<CheerioAPI, string>;
-        description: Chainy<CheerioAPI, string>;
-        cover_url?: Chainy<CheerioAPI, string>;
-        status?: Chainy<CheerioAPI, string>;
-        is_ongoing?: Chainy<CheerioAPI, boolean>;
-        authors?: Chainy<CheerioAPI, string[]>;
-        genres?: Chainy<CheerioAPI, string[]>;
-        alternative_titles?: Chainy<CheerioAPI, string[]>;
-    };
+        url?: ChainBuilder
+        title: ChainBuilder
+        description: ChainBuilder
+        cover_url?: ChainBuilder
+        status?: ChainBuilder
+        is_ongoing?: ChainBuilder
+        authors?: ChainBuilder
+        genres?: ChainBuilder
+        alternative_titles?: ChainBuilder
+    }
 
     search?: {
-        search_urls: string[];
-        format_keyword: Chainy<string, string>;
+        search_urls: string[]
+        format_keyword: ChainBuilder
 
-        root: Chainy<CheerioAPI, Cheerio<Element>[]>;
-        url: Chainy<CheerioAPI, string>;
-        title: Chainy<CheerioAPI, string>;
-        description?: Chainy<CheerioAPI, string>;
-        cover_url?: Chainy<CheerioAPI, string>;
-        status?: Chainy<CheerioAPI, string>;
-        is_ongoing?: Chainy<CheerioAPI, boolean>;
-        authors?: Chainy<CheerioAPI, string[]>;
-        genres?: Chainy<CheerioAPI, string[]>;
-        alternative_titles?: Chainy<CheerioAPI, string[]>;
-    };
+        root: ChainBuilder
+        url: ChainBuilder
+        title: ChainBuilder
+        description?: ChainBuilder
+        cover_url?: ChainBuilder
+        status?: ChainBuilder
+        is_ongoing?: ChainBuilder
+        authors?: ChainBuilder
+        genres?: ChainBuilder
+        alternative_titles?: ChainBuilder
+    }
 
     chapters: {
-        accepts: Chainy<CheerioAPI, unknown>;
+        accepts: ChainBuilder
 
-        root: Chainy<CheerioAPI, Cheerio<Element>[], unknown, true | false>;
-        url: Chainy<CheerioAPI, string>;
-        title: Chainy<CheerioAPI, string>;
-        number: Chainy<CheerioAPI, number>;
-        cover_url?: Chainy<CheerioAPI, string>;
-        date?: Chainy<CheerioAPI, Date>;
-    };
+        root: ChainBuilder
+        url: ChainBuilder
+        title: ChainBuilder
+        number: ChainBuilder
+        cover_url?: ChainBuilder
+        date?: ChainBuilder
+    }
 
     images: {
-        accepts: Chainy<CheerioAPI, unknown>;
-        urls: Chainy<CheerioAPI, string[], unknown, true | false>,
-    };
+        accepts: ChainBuilder
+        urls: ChainBuilder
+    }
 }

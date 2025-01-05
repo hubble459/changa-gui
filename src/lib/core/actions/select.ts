@@ -1,5 +1,5 @@
 import type { Cheerio, CheerioAPI } from 'cheerio';
-import { create_action } from '../chain';
+import { create_action } from '../util';
 import { isCheerio, isCheerioAPI } from '../util';
 
 export const select = create_action({

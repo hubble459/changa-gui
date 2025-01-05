@@ -14,47 +14,44 @@
     import type { PageData } from './$types';
     import Tabs from '$lib/components/Tabs.svelte';
     import * as devalue from 'devalue';
-    import { ScraperParseDevalue, ScraperStringifyDevalue } from '$lib/transport';
     import { proxy_fetch } from '$lib/client/proxy_fetch';
     import * as cheerio from 'cheerio';
-    import ChainyBuilder from '$lib/components/ChainyBuilder.svelte';
-    import { Chainy } from 'chainy';
-    import { writable } from 'svelte/store';
+    import ChainBuilder from '$lib/components/ChainBuilder.svelte';
 
     let { data }: { data: PageData } = $props();
+
     
     let new_url: string = $state('');
-    // let config: BuildScraper = $state(data.scraper);
-    const config = writable(data.scraper);
+    let scraper: BuildScraper = $state(data.scraper);
 
     let html = $state('');
-    let doc = $derived(cheerio.load(html, {baseURI: $config.url}));
+    let doc = $derived(cheerio.load(html, {baseURI: scraper.url}));
 
     $effect(() => {
-        if ($config.url) {
+        if (scraper.url) {
             console.log('owo');
             
-            localStorage.setItem(data.uuid, devalue.stringify($config, ScraperStringifyDevalue));
+            localStorage.setItem(data.uuid, devalue.stringify(scraper));
         }
     });
 
     $effect(() => {
-        if ($config.url) {
+        if (scraper.url) {
             console.log('changed');
             
             (async (url: string) => {
                 const html = await proxy_fetch(url).then(r => r.text());
                 console.log(html);
-            })($config.url);
+            })(scraper.url);
         }
     });
 
     onMount(async () => {
         const stored_scraper = localStorage.getItem(data.uuid);
         if (!stored_scraper) {
-            localStorage.setItem(data.uuid, devalue.stringify(config, ScraperStringifyDevalue));
+            localStorage.setItem(data.uuid, devalue.stringify(scraper));
         } else {
-            $config = devalue.parse(stored_scraper, ScraperParseDevalue);
+            scraper = devalue.parse(stored_scraper);
         }
     });
 
@@ -68,7 +65,6 @@
         const html = '';
 
         console.log(new_url);
-        
     }
 </script>
 
@@ -86,21 +82,19 @@
         <ul class="url-list">
             {#each Object.values(data.caches) as cached_url}
                 <li>
-                    <input type="radio" id={cached_url} name="url" value={cached_url} bind:group={$config.url}>
+                    <input type="radio" id={cached_url} name="url" value={cached_url} bind:group={scraper.url}>
                     <label title={cached_url} for={cached_url}>{cached_url}</label>
                 </li>
             {/each}
         </ul>
     </div>
 
-    <Tabs labels={['manga', 'chapters', 'images', 'search'] as const}>
+    <Tabs labels={['manga', 'chapters', 'images', 'search'] as const} padding={false}>
         {#snippet tab(name)}
             {#if name === 'manga'}
-                <Tabs labels={['accepts', 'title', 'description'] as const}>
+                <Tabs labels={['accepts', 'title', 'description'] as const} padding={false}>
                     {#snippet tab(field)}
-                        <h5>{field}</h5>
-                        <p>{$config.chains[name][field].items.length}</p>
-                        <ChainyBuilder bind:items={$config.chains[name][field].items}></ChainyBuilder>
+                        <ChainBuilder bind:action={scraper.chains[name][field]} />
                     {/snippet}
                 </Tabs>
             {:else}

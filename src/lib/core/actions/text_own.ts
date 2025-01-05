@@ -1,5 +1,5 @@
 import type { CheerioAPI } from 'cheerio';
-import { create_action } from '../chain';
+import { create_action } from '../util';
 import { isCheerio, ownText } from '../util';
 
 export const text_own = create_action({

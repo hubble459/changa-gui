@@ -3,7 +3,6 @@ import path from 'node:path';
 import * as devalue from 'devalue';
 import { type Scraper } from '$lib/types/scraper';
 import { randomUUID, createHash } from 'node:crypto';
-import { ScraperParseDevalue, ScraperStringifyDevalue } from '$lib/transport';
 
 const root = path.resolve(import.meta.dirname + '/../../..');
 
@@ -22,7 +21,7 @@ export const scraper = {
                 configs[uuid] = scraper;
             }
         }
-    
+
         return configs;
     },
     get(uuid: string): Scraper | undefined {
@@ -32,12 +31,12 @@ export const scraper = {
             return undefined;
         }
 
-        return devalue.parse(fs.readFileSync(file_path, 'utf-8'), ScraperParseDevalue);
+        return devalue.parse(fs.readFileSync(file_path, 'utf-8'));
     },
     update(uuid: string, config: Scraper): void {
         const file_path = path.join(config_dir, `${uuid}.json`);
 
-        fs.writeFileSync(file_path, devalue.stringify(config, ScraperStringifyDevalue));
+        fs.writeFileSync(file_path, devalue.stringify(config));
     },
     add(config: Scraper): string {
         const uuid = randomUUID();
@@ -48,20 +47,20 @@ export const scraper = {
     },
 };
 
-export type CacheData = {url: string, html: string};
+export type CacheData = { url: string, html: string };
 export const cache = {
     index(): Record<string, string> {
         const cache_dir_files = fs.readdirSync(cache_dir);
 
         const caches: Record<string, string> = {};
-        
+
         for (const cache_file of cache_dir_files) {
             const cached = this.get(cache_file);
             if (cached) {
-                caches[cache_file] = cached.url;                
+                caches[cache_file] = cached.url;
             }
         }
-    
+
         return caches;
     },
     hash(url: string): string {
@@ -93,5 +92,5 @@ export const cache = {
     },
     add(data: CacheData): string {
         return this.update(data);
-    }
+    },
 };
