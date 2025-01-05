@@ -1,3 +1,12 @@
+<script lang="ts" module>
+// import { html_axios } from 'chainy';
+
+    // html_axios.defaults.proxy = {
+    //     host: 'localhost',
+    //     port: 8080,
+    // }
+</script>
+
 <script lang="ts">
     import type { Scraper } from '$lib/types/scraper';
     import type { Chainy } from 'chainy';

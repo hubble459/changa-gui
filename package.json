@@ -16,6 +16,7 @@
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.4",
+		"@stylistic/eslint-plugin": "^2.12.1",
 		"@sveltejs/adapter-auto": "^3.3.1",
 		"@sveltejs/kit": "^2.15.1",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
@@ -36,8 +37,11 @@
 		"@tailwindcss/container-queries": "^0.1.1",
 		"@tailwindcss/forms": "^0.5.9",
 		"@tailwindcss/typography": "^0.5.15",
+		"axios": "^1.7.9",
 		"chainy": "link:chainy",
 		"cheerio": "^1.0.0",
-		"devalue": "^5.1.1"
+		"date-fns": "^4.1.0",
+		"devalue": "^5.1.1",
+		"parse-human-relative-time": "^3.0.2"
 	}
 }

@@ -1,19 +1,6 @@
 import { Chainy } from 'chainy';
 import type { Cheerio, CheerioAPI } from 'cheerio';
 
-export const ScraperParseDevalue = {
-    Chainy: (value: any) => {
-        const chain = new Chainy(value.type);
-        chain.items.push(...value.items);
-        return chain;
-    }
-};
-
-export const ScraperStringifyDevalue = {
-    // @ts-expect-error `type` field in Chainy is private
-    Chainy: (value: unknown) => value instanceof Chainy && {type: value.type, items: value.items},
-};
-
 export type Scraper = {
     name: string,
     hostnames: string[],
@@ -21,8 +8,9 @@ export type Scraper = {
 };
 
 export interface Chains {
-    accepts: Chainy<CheerioAPI, unknown>;
     manga: {
+        accepts: Chainy<CheerioAPI, unknown>;
+
         url?: Chainy<CheerioAPI, string>;
         title: Chainy<CheerioAPI, string>;
         description: Chainy<CheerioAPI, string>;
@@ -51,6 +39,8 @@ export interface Chains {
     };
 
     chapters: {
+        accepts: Chainy<CheerioAPI, unknown>;
+
         root: Chainy<CheerioAPI, Cheerio<Element>[], unknown, true | false>;
         url: Chainy<CheerioAPI, string>;
         title: Chainy<CheerioAPI, string>;
@@ -59,5 +49,8 @@ export interface Chains {
         date?: Chainy<CheerioAPI, Date>;
     };
 
-    images: Chainy<CheerioAPI, string[], unknown, true | false>;
+    images: {
+        accepts: Chainy<CheerioAPI, unknown>;
+        urls: Chainy<CheerioAPI, string[], unknown, true | false>,
+    };
 }

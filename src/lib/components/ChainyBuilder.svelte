@@ -20,7 +20,7 @@
     function addAction(action: keyof Actions | 'group') {
         let item = action === 'group' ? {type: 'and', items: []} : {action, options: []};
 
-         if (typeof createAtIndex === 'number') {
+        if (typeof createAtIndex === 'number') {
             items.splice(createAtIndex + 1, 0, item);            
         } else {
             items.push(item);

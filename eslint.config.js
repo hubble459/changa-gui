@@ -4,6 +4,7 @@ import svelte from 'eslint-plugin-svelte';
 import globals from 'globals';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript-eslint';
+import stylistic from '@stylistic/eslint-plugin';
 const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 
 export default ts.config(
@@ -12,20 +13,24 @@ export default ts.config(
     ...ts.configs.strict,
     ...svelte.configs['flat/recommended'],
     {
+        plugins: { '@stylistic': stylistic },
+        ...stylistic.configs['recommended-flat'],
+    },
+    {
         languageOptions: {
             globals: {
                 ...globals.browser,
-                ...globals.node
-            }
-        }
+                ...globals.node,
+            },
+        },
     },
     {
         files: ['**/*.svelte'],
 
         languageOptions: {
             parserOptions: {
-                parser: ts.parser
-            }
+                parser: ts.parser,
+            },
         },
 
         rules: {
@@ -38,13 +43,30 @@ export default ts.config(
             }],
         },
     },
+    // Style rules
+    {
+        rules: {
+            '@stylistic/array-bracket-spacing': ['error', 'never'],
+            '@stylistic/arrow-parens': ['error', 'always'],
+            '@stylistic/arrow-spacing': 'error',
+            '@stylistic/block-spacing': 'error',
+            '@stylistic/eol-last': ['error', 'always'],
+            '@stylistic/indent': ['error', 4],
+            '@stylistic/quote-props': ['error', 'consistent-as-needed'],
+            '@stylistic/quotes': ['error', 'single'],
+            '@stylistic/semi': ['error', 'always'],
+            '@stylistic/space-before-function-paren': ['error', {
+                named: 'never',
+                anonymous: 'always',
+                asyncArrow: 'always',
+            }],
+            '@stylistic/brace-style': ['error', '1tbs'],
+        },
+    },
     {
         files: ['**/*.svelte', '**/*.ts', '**/*.js'],
 
         rules: {
-            'quotes': ['error', 'single'],
-            'quote-props': ['error', 'consistent-as-needed'],
-            'semi': ['error'],
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/no-unused-vars': ['error', {
                 args: 'all',
@@ -53,14 +75,8 @@ export default ts.config(
                 caughtErrorsIgnorePattern: '^_',
                 destructuredArrayIgnorePattern: '^_',
                 varsIgnorePattern: '^_',
-                ignoreRestSiblings: true
+                ignoreRestSiblings: true,
             }],
-        }
+        },
     },
-    {
-        files: ['**/*.ts', '**/*.js'],
-        rules: {
-            indent: ['error', 4],
-        }
-    }
 );
