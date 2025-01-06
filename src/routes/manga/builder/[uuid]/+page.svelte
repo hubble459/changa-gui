@@ -29,19 +29,15 @@
 
     $effect(() => {
         if (scraper.url) {
-            console.log('owo');
-            
             localStorage.setItem(data.uuid, devalue.stringify(scraper));
         }
     });
 
     $effect(() => {
         if (scraper.url) {
-            console.log('changed');
-            
             (async (url: string) => {
                 const html = await proxy_fetch(url).then(r => r.text());
-                console.log(html);
+                // console.log(html);
             })(scraper.url);
         }
     });
@@ -94,7 +90,7 @@
             {#if name === 'manga'}
                 <Tabs labels={['accepts', 'title', 'description'] as const} padding={false}>
                     {#snippet tab(field)}
-                        <ChainBuilder bind:action={scraper.chains[name][field]} />
+                        <ChainBuilder bind:action={scraper.chains[name][field]} index={0} />
                     {/snippet}
                 </Tabs>
             {:else}

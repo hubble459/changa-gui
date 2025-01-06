@@ -3,13 +3,26 @@
     import ChainBuilder from './ChainBuilder.svelte';
 
     type Props = {
+        parent?: ChainBuilderType
         action: ChainBuilderType
+        index: number
     };
 
-    let { action = $bindable() }: Props = $props();
+    let { parent = $bindable(), action = $bindable(), index }: Props = $props();
 
-    function add(items: ChainBuilderType[]) {
+    function add(items?: ChainBuilderType[]) {
+        items ??= parent?.items[0] ?? [] as ChainBuilderType<'all'>['items'][0];
+
         items.push({ type: 'select', items: ['h1'] } as ChainBuilderType<'select'>);
+    }
+
+    function remove() {
+        if (parent) {
+            const parent_items = parent.items[0] as ChainBuilderType<'all'>['items'][0];
+            if (Array.isArray(parent_items)) {
+                parent_items.splice(index, 1);
+            }
+        }
     }
 </script>
 
@@ -22,8 +35,9 @@
             <button onclick={() => add(action.items[0])} class="add">+</button>
             <button class="delete">x</button>
         </div>
-        {#each (action as ChainBuilderType<'any' | 'all'>).items[0] as _, i}
-            <ChainBuilder bind:action={action.items[0][i]} />
+        {#each action.items[0] as _, i}
+            {i}
+            <ChainBuilder bind:action={action.items[0][i]} bind:parent={action} index={i} />
         {/each}
     </div>
 {:else}
@@ -32,11 +46,11 @@
             <span>{action.type}</span>
             <button class="move-up">↑</button>
             <button class="move-down">↓</button>
-            <button class="add">+</button>
-            <button class="delete">x</button>
+            <button onclick={() => add()} class="add">+</button>
+            <button onclick={() => remove()} class="delete">x</button>
         </div>
         {#if action.type === 'select'}
-            <label>selector: <input type="text"></label>
+            <label>selector: <input type="text" bind:value={action.items[0]}></label>
         {/if}
     </div>
 {/if}
