@@ -47,9 +47,12 @@
 
 <div class="grid grid-cols-7 gap-y-2">
     {#each Object.entries(scraper.chains.manga) as [property, chain]}
-        {@const val = await value(chain)}
-        <strong class="col-span-2">{property}</strong>
-        <p class="col-span-5" class:error={val.error}>{val.value}</p>
+        {#await value(chain)}
+            <p>loading...</p>
+        {:then val}
+            <strong class="col-span-2">{property}</strong>
+            <p class="col-span-5" class:error={val.error}>{val.value}</p>
+        {/await}
     {/each}
 </div>
 
